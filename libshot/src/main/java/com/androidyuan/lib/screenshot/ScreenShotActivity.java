@@ -13,40 +13,37 @@ import android.widget.Toast;
 /**
  * Created by wei on 16-9-18.
  * <p>
- * 完全透明 只是用于弹出权限申请的窗而已
- *
- * 这个类的用于service需要在manifest中配置 intent-filter action
+ *    there is  totally transparent,only has a record permission dialog.
+ *    if you want to screenshot other applications,might you need to use this activity to take screenshot.
  */
 public class ScreenShotActivity extends Activity {
 
-    public static final int REQUEST_MEDIA_PROJECTION = 0x2893;
+    public static final int REQUEST_MEDIA_PROJECTION = 0x12f81ac;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        setTheme(android.R.style.Theme_Dialog);//这个在这里设置 之后导致 的问题是 背景很黑
+//        setTheme(android.R.style.Theme_Dialog);//this line cause a problem, activity background wasn't transparent but black.
         super.onCreate(savedInstanceState);
 
-        //如下代码 只是想 启动一个透明的Activity 而上一个activity又不被pause
+        //here is a transparent activity,and previous activity will not be called Activity#onPause().
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         getWindow().setDimAmount(0f);
 
-        requestScreenShot();
+        requestScreenShotPermission();
     }
 
 
-    public void requestScreenShot() {
+    public void requestScreenShotPermission() {
         if (Build.VERSION.SDK_INT >= 21) {
             startActivityForResult(createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
-        } else {
-            toast("版本过低,无法截屏");
         }
     }
 
     private Intent createScreenCaptureIntent() {
-        //这里用media_projection代替Context.MEDIA_PROJECTION_SERVICE 是防止低于21 api编译不过
+        //here used media_projection instead of Context.MEDIA_PROJECTION_SERVICE to  make it successfully build on low api.
         return ((MediaProjectionManager) getSystemService("media_projection")).createScreenCaptureIntent();
     }
 
@@ -63,14 +60,18 @@ public class ScreenShotActivity extends Activity {
                     shotter.startScreenShot(new Shotter.OnShotListener() {
                         @Override
                         public void onFinish() {
-                            toast("shot finish!");
+                            setResult(RESULT_OK);
                             finish(); // don't forget finish activity
                         }
                     });
                 } else if (resultCode == RESULT_CANCELED) {
-                    toast("shot cancel , please give permission.");
+                    setResult(RESULT_CANCELED);
+                    finish();
+//                    toast("shot cancel , please give permission.");
                 } else {
-                    toast("unknow exceptions!");
+                    setResult(RESULT_CANCELED);
+                    finish();
+//                    toast("unknow exceptions!");
                 }
             }
         }

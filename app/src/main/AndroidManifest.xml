@@ -15,15 +15,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.androidyuan.lib.screenshot.ScreenShotActivity"
-            android:exported="true"
-            android:theme="@android:style/Theme.Dialog">
-            <intent-filter>
-                <action android:name="androidyuan.shotter"></action>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+
 
         <service android:name=".ScreenShotService">
 

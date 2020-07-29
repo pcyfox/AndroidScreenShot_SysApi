@@ -20,7 +20,7 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickShotFromService"
@@ -29,5 +29,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+
+
+    <Button
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickHavePermission"
+        android:text="i have got permission,to take screenshot."
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
